@@ -36,7 +36,7 @@ profileRouter.patch("/profile/password", userAuth, async (req, res) => {
   try {
     const isOldPasswordValid = await validateOldPassword(req);
     if (!isOldPasswordValid) {
-      return res.send("old password is incorrect")
+      return res.send("old password is incorrect");
     }
     const { newPassword } = req.body;
     const user = req.user;
