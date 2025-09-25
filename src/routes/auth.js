@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 authRouter.post("/signup", async (req, res) => {
   try {
     const { emailId, password, firstName, lastName } = req.body;
-    validateSignupData(req);
+    validateSignupData(req.body);
 
     const passwordhash = await bcrypt.hash(password, 10);
     const user = new User({
@@ -17,11 +17,15 @@ authRouter.post("/signup", async (req, res) => {
       password: passwordhash,
       emailId,
     });
-    await user.save();
+    const savedUser=await user.save();
+    const token = await user.getJWT();
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 8 * 3600000),
+      });
 
-    res.send("user added susscessfully");
+    res.json({message:"user added susscessfully",data:savedUser});
   } catch (err) {
-    res.send("err " + err.message);
+    res.status(400).send("err :" + err.message);
   }
 });
 authRouter.post("/login", async (req, res) => {
@@ -38,7 +42,7 @@ authRouter.post("/login", async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
       });
-      res.send("login successfull");
+      res.send(user);
     } else {
       throw new Error("password is not correct");
     }
@@ -53,3 +57,5 @@ authRouter.post("/logout", async (req, res) => {
 });
 
 module.exports = authRouter;
+
+

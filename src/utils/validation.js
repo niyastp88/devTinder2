@@ -1,7 +1,7 @@
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const validateSignupData = (req) => {
-  const { firstName, lastName, emailId, password } = req.body;
+  const { firstName, lastName, emailId, password } = req;
   if (!firstName || !lastName) {
     throw new Error("name is not valid");
   } else if (!validator.isEmail(emailId)) {

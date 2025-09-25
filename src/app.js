@@ -2,7 +2,12 @@ const express = require("express");
 const connectDB = require("./config/database");
 const User = require("./models/user");
 const cookieParser = require("cookie-parser");
+const cors=require("cors")
 const app = express();
+app.use(cors({
+  origin:"http://localhost:5173",
+  credentials:true,
+}))
 app.use(express.json());
 app.use(cookieParser());
 const authRouter = require("./routes/auth");
@@ -18,7 +23,7 @@ connectDB()
   .then(() => {
     console.log("database connected");
     app.listen(7777, () => {
-      console.log("server running");
+      console.log("server running on 7777");
     });
   })
   .catch((err) => {
