@@ -22,7 +22,7 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("database connected");
-    app.listen(7777,'0.0.0.0', () => {
+    app.listen(7777, () => {
       console.log("server running on 7777");
     });
   })
